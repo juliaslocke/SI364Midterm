@@ -1,0 +1,12 @@
+<html>
+<body>
+	{%if msg == ''%}
+	{%for y in default_msg.split()%}
+	<h1>{{y}}</h1>
+	{%endfor%}
+	{%else%}
+	<h1>{{msg}}</hi>
+	{%endif%}
+	<br><img src = '/static/{{img_name}}.png' height= '300' width='300' align = 'center'><br>
+</body>
+</html>

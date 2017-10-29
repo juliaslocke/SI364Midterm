@@ -1,0 +1,10 @@
+{% block content %}
+  {%if cookie_img == 'cookie'%}<img src = '/static/cookie.png' height= '190' width='190' align = 'center'><br><i>*There is a cookie set</i>{%else%}
+  <img src = '/static/{{img}}.png' height= '190' width='190' align = 'center'><br>{%endif%}
+  <h1>Let's Get Started!</h1>
+  <form method="POST" action="http://localhost:5000/msgchoice">
+      <p>{{ form.myname.label }}{{ form.myname() }}</p>
+      <p>{{ form.friendname.label }}{{ form.friendname() }}</p>
+      {{ form.next() }}
+  </form>
+{% endblock %}
