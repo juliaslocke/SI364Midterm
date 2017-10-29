@@ -19,7 +19,7 @@ def internal_error(e):
 
 class WelcomeForm(FlaskForm):
 	myname = StringField("What is your name?")
-	friendname = StringField("What is your friend's name?")
+	songname = StringField("What is your favorite song?")
 	next = SubmitField("Next")
 
 @app.route('/')
@@ -32,13 +32,16 @@ def get_assignments(imgchoice):
 	cookie_img = request.cookies.get('imgchoice')
 	return render_template('form.html', form=newform, img=imgchoice, cookie_img=cookie_img)
 
-@app.route('/msgchoice', methods=['GET', 'POST'])
+@app.route('/songchoice', methods=['GET', 'POST'])
 def choose_msg():
 	res = WelcomeForm(request.form)
 	if request.method == 'POST':
 		me = res.myname.data
-		friend = res.friendname.data
-		return render_template('message_form.html', me = me, friend=friend)
+		song = res.songname.data
+		params = {'media':'music', 'format':'json', 'term':song, 'limit':10}
+		info = requests.get('https://itunes.apple.com/search?', params = params)
+		data = json.loads(info.text)
+		return render_template('message_form.html', me = me, song=song, data=data['results'])
 	flash('Oops, your name must be filled out!')
 	return redirect(url_for('get_assignments', imgchoice = request.cookies.get('imgchoice')))
 
@@ -46,10 +49,11 @@ def choose_msg():
 def show_image():
 	if request.method == 'GET':
 		result = request.args
-		default_msg = 'Just stopping by to say hi!'
-		msg = result.get('message')
-		img_name = result.get('image')
-		return render_template('displaying.html', msg=msg, img_name=img_name, default_msg=default_msg)
+		artist = result.get('coverart')
+		params = {'media':'music', 'format':'json', 'term':artist}
+		info = requests.get('https://itunes.apple.com/search?', params = params)
+		data = json.loads(info.text)
+		return render_template('displaying.html', artist=artist, data = data['results'])
 
 @app.route('/createcookie')
 def cookie():

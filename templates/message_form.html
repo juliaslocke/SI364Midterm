@@ -3,15 +3,12 @@
 </head>
 <body>
 	<form action="http://localhost:5000/display" method="GET">
-		<h2>Hey {{me}}, what would you like to say to {{friend}}?</h2><br><br>
-		Enter your message here, or we can create one for you:<br>
-		<input type="text" size='40' name="message" value=""><br><br>
-		Select an image to go with your message:<br>
-		<input type="radio" name="image" value="birthday"><img src = '/static/birthday.png' height= '190' width='190'><br><br>
-		<input type="radio" name="image" value="sick"><img src = '/static/sick.png' height= '190' width='190'><br><br>
-		<input type="radio" name="image" value="hero"><img src = '/static/hero.png' height= '190' width='190'><br><br>
-		<input type="radio" name="image" value="happy"><img src = '/static/happy.png' height= '190' width='190'><br><br>
-		<input type="submit" value="Create Image">
+		<h2>Hey {{me}}, which version of {{song}} were you talking about?</h2><br><br>
+		Select from the cover art below:<br>
+		{%for d in data%}
+		<input type="radio" name="coverart" value='{{d['artistName']}}'><img src = {{d['artworkUrl100']}} height= '100' width='100'><br><br>
+		{%endfor%}
+		<input type="submit" value="Continue">
 </form> 
 </body>
 </html>
